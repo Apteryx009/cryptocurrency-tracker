@@ -1,4 +1,4 @@
-import { AppBar, Container, Toolbar, Typography, MenuIcon, Select, MenuItem, useScrollTrigger, makeStyles } from '@material-ui/core'
+import { AppBar, Container, Toolbar, Typography, MenuIcon, Select, MenuItem, useScrollTrigger, makeStyles, createTheme, ThemeProvider } from '@material-ui/core'
 import React from 'react'
 import { useHistory } from 'react-router-dom';
 
@@ -21,33 +21,50 @@ const Header = () => {
 
     const history = useHistory()
 
+    const darkTheme = createTheme({
+        palette: {
+            primary: {
+                main: '#fff'
+            },
+            type: "dark",
+        }
+
+    })
+
+
     return (
-<AppBar color='transparent' position='static'>
-<Container>
-        <Toolbar>
-            <Typography onClick={() => history.push("/")} className={classes.title}>
-                Crypto Hunter
-            </Typography>
+        <ThemeProvider theme={darkTheme}>
+            <AppBar color='transparent' position='static'>
+                <Container>
+                    <Toolbar>
+                        <Typography 
+                        onClick={() => history.push("/")} 
+                        className={classes.title}
+                        variant='h6'
+                        >
+                       
+                            Crypto Hunter
+                        </Typography>
 
-        <Select 
-        variant='outlined'
-        style={{
-            width:100, 
-            height: 40,
-            marginLeft: 15,
-        }}
-        
-        >
-            <MenuItem value={'USD'}>USD</MenuItem>
-            <MenuItem value={'INR'}>INR</MenuItem>
-        </Select>
+                        <Select
+                            variant='outlined'
+                            style={{
+                                width: 100,
+                                height: 40,
+                                marginRight: 15,
+                            }}
 
-        </Toolbar>
+                        >
+                            <MenuItem value={'USD'}>USD</MenuItem>
+                            <MenuItem value={'INR'}>INR</MenuItem>
+                        </Select>
 
-</Container>
+                    </Toolbar>
 
-</AppBar>
+                </Container>
 
+            </AppBar>
+        </ThemeProvider>
     )
 }
 
