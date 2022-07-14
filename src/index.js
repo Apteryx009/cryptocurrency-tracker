@@ -4,12 +4,11 @@ import "./index.css";
 import App from "./App";
 import "react-alice-carousel/lib/alice-carousel.css";
 import CryptoContext from "./CryptoContext";
+import "react-alice-carousel/lib/alice-carousel.css";
 
 ReactDOM.render(
- 
-    <CryptoContext>
-      <App />
-    </CryptoContext>
-  ,
+  <CryptoContext>
+    <App />
+  </CryptoContext>,
   document.getElementById("root")
 );
