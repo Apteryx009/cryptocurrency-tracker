@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export function numberWithCommas(x){
+export function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
@@ -60,21 +60,28 @@ const Carousel = () => {
           {coin?.symbol}
           &nbsp;
           {/* For space*/}
-        
-          <span>
-          {profit && '+'}
-          {/* Fix to 2 dec places */}
-          {coin?.price_change_percentage_24h?.toFixed(2)}%
+
+          {/* Change to red or green depending on how coin is doing */}
+          <span
+            style={{
+              color: profit > 0 ? "rgb(14, 203, 129)" : "red",
+              fontWeight: 500,
+            }}
+          >
+            {profit && "+"}
+            {coin?.price_change_percentage_24h?.toFixed(2)}%
           </span>
+
+         
 
 
 
         </span>
 
-      <span style={{fontSize: 22, fontWeight: 500}}>
-        {symbol}{numberWithCommas(coin?.current_price.toFixed(2))}
+        <span style={{ fontSize: 22, fontWeight: 500 }}>
+          {symbol}{numberWithCommas(coin?.current_price.toFixed(2))}
 
-      </span>
+        </span>
 
 
       </Link>
