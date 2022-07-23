@@ -1,9 +1,11 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { CoinList } from "../../config/api";
+import { useHistory } from "react-router-dom";
+import { CoinList } from "../config/api";
 // Here we are implmenting the Coinlist API
 
-import { CryptoState } from "../../CryptoContext";
+import { CryptoState } from "../CryptoContext";
+import { numberWithCommas } from "./Banner/Carousel";
 import {
   TextField,
   Container,
@@ -16,15 +18,18 @@ import {
   TableHead,
   TableRow,
   TableCell,
+  TableBody,
+  makeStyles,
 } from "@material-ui/core";
 
 const CoinsTable = () => {
   const [coins, setCoins] = useState([]);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState();
+  const history = useHistory();
 
   //    Destructing currency from CryptoSTate
-  const { currency } = CryptoState();
+  const { currency, symbol } = CryptoState();
 
   const fetchCoins = async () => {
     setLoading(true);
@@ -50,6 +55,16 @@ const CoinsTable = () => {
       type: "dark",
     },
   });
+  const handelSearch = () => {
+    return coins.filter(
+      (coin) =>
+        coin.name.toLowerCase().includes(search) ||
+        coin.symbol.toLowerCase().includes(search)
+    );
+  };
+  const useStyles = makeStyles(() => ({}));
+
+  const classes = useStyles();
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -90,6 +105,46 @@ const CoinsTable = () => {
                   ))}
                 </TableRow>
               </TableHead>
+              <TableBody>
+                {handelSearch().map((row) => {
+                  const profit = row.price_change_percentage_24 > 0;
+
+                  return (
+                    <TableRow
+                      onClick={() => history.push(`/coins/${row.id}`)}
+                      className={classes.row}
+                      key={row.name}
+                    >
+                      <TableCell
+                        component='th'
+                        scope='row'
+                        styles={{ display: "flex", gap: 15 }}
+                      >
+                        <img
+                          src={row?.image}
+                          alt={row.name}
+                          height='50'
+                          style={{ marginBottom: 10 }}
+                        />
+                        <div
+                          style={{ display: "flex", flexDirection: "column" }}
+                        >
+                          <span
+                            style={{ textTransform: "uppercase", fontSize: 22 }}
+                          >
+                            {row.symbol}
+                          </span>
+                          <span style={{ color: "darkgrey" }}>{row.name}</span>
+                        </div>
+                      </TableCell>
+                      <TableCell align='right'>
+                        {symbol}{" "}
+                        {numberWithCommas(row.current_price.toFixed(2))}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
             </Table>
           )}
         </TableContainer>
