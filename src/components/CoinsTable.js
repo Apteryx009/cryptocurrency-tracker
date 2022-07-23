@@ -62,7 +62,16 @@ const CoinsTable = () => {
         coin.symbol.toLowerCase().includes(search)
     );
   };
-  const useStyles = makeStyles(() => ({}));
+  const useStyles = makeStyles(() => ({
+    row: {
+      backgroundColor: "#16171a",
+      cursor: "pointer",
+      "&:hover": {
+        backgroundColor: "#131111",
+      },
+      fontFamily: "Montserrat",
+    },
+  }));
 
   const classes = useStyles();
 
@@ -140,6 +149,23 @@ const CoinsTable = () => {
                       <TableCell align='right'>
                         {symbol}{" "}
                         {numberWithCommas(row.current_price.toFixed(2))}
+                      </TableCell>
+                      <TableCell
+                        align='right'
+                        style={{
+                          color: profit > 0 ? "rgb(14, 203, 129)" : "red",
+                          fontWeight: 500,
+                        }}
+                      >
+                        {profit && "+"}
+                        {row.price_change_percentage_24h.toFixed(2)}%
+                      </TableCell>
+                      <TableCell align='right'>
+                        {symbol}{" "}
+                        {numberWithCommas(
+                          row.market_cap.toString().slice(0, -6)
+                        )}
+                        M
                       </TableCell>
                     </TableRow>
                   );
